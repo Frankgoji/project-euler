@@ -41,7 +41,6 @@ public class PE60 {
     }
 
     /** Returns a sequence of prime pairs starting from INDEX. */
-    // Ugh, this is gonna be a doozy
     public static ArrayList<Integer> traverse(int index, int length,
             ArrayList<Integer> check) {
         int n = primes.get(index);
@@ -55,7 +54,17 @@ public class PE60 {
         if (length == 1) {
             return res;
         }
-        return primes;
+        int i = 0;
+        ArrayList<Integer> pairs = pairPrimes.get(n);
+        while (i < pairs.size()) {
+            ArrayList<Integer> newres = traverse(pairs.get(i), length - 1, res);
+            if (newres.size() > 0) {
+                res.add(pairs.get(i));
+                return res;
+            }
+            i++;
+        }
+        return new ArrayList<Integer>();
     }
 
     /** Main program. */

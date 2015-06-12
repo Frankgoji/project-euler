@@ -47,7 +47,7 @@ public class PE60 {
         int n = primes.get(index);
         for (int c : check) {
             if (!isPrimePair(c, n)) {
-                return traverse(index + 1, length, check);
+                return new ArrayList<Integer>();
             }
         }
         ArrayList<Integer> res = new ArrayList<>(check);

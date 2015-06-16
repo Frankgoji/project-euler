@@ -17,10 +17,10 @@ public class PE60 {
     public static boolean isPrime(int x) {
         if (primes.contains(x)) {
             return true;
-        } else if (x < primes.get(primes.size() - 1)) {
+        } else if (x < last(primes)) {
             return false;
         }
-        for (int i = primes.get(primes.size() - 1) + 1; i < x + 1; i++) {
+        for (int i = last(primes) + 1; i < x + 1; i++) {
             for (int n : primes) {
                 if (i % n == 0) {
                     break;
@@ -30,7 +30,7 @@ public class PE60 {
                 }
             }
         }
-        return primes.get(primes.size() - 1) == x;
+        return last(primes) == x;
     }
 
     /** Returns whether or not A and B are a prime pair. Assumes that A and B
@@ -40,31 +40,33 @@ public class PE60 {
         return isPrime(Integer.parseInt(A+B)) && isPrime(Integer.parseInt(B+A));
     }
 
-    /** Returns a sequence of prime pairs starting from INDEX. */
-    public static ArrayList<Integer> traverse(int index, int length,
-            ArrayList<Integer> check) {
-        int n = primes.get(index);
-        for (int c : check) {
-            if (!isPrimePair(c, n)) {
-                return new ArrayList<Integer>();
+    /** Returns a sequence of prime pairs. */
+    public static ArrayList<Integer> traverse(int length) {
+        ArrayList<Integer> empty = new ArrayList<>(),
+                           stack = new ArrayList<>();
+        int i = 1,
+            p = primes.get(i);
+        stack.add(p);
+        while (stack.size() < length) {
+            if (i > primes.size() - length) {
+                return empty;
             }
-        }
-        ArrayList<Integer> res = new ArrayList<>(check);
-        res.add(n);
-        if (length == 1) {
-            return res;
-        }
-        int i = 0;
-        ArrayList<Integer> pairs = pairPrimes.get(n);
-        while (i < pairs.size()) {
-            ArrayList<Integer> newres = traverse(pairs.get(i), length - 1, res);
-            if (newres.size() > 0) {
-                res.add(pairs.get(i));
-                return res;
+            ArrayList<Integer> pairs = pairPrimes.get(last(stack));
+            for (int c = pairs.size() - 1; c <= 0; c--) {
+                if (pairs.get(c) < p) {
+                    continue;
+                } else {
+
+                }
             }
             i++;
         }
-        return new ArrayList<Integer>();
+        return stack;
+    }
+
+    /** Returns the last item in the ArrayList. */
+    public static <T> T last(ArrayList<T> list) {
+        return list.get(list.size() - 1);
     }
 
     /** Main program. */
@@ -72,15 +74,21 @@ public class PE60 {
         isPrime(1000);
         int size = primes.size();
         for (int i = size - 1; i >= 0; i -= 1) {
+            System.out.println(i);
             for (int j = i - 1; j >= 0; j -= 1) {
                 int a = primes.get(i), b = primes.get(j);
                 if (isPrimePair(a, b)) {
                     if (!pairPrimes.containsKey(a)) {
                         pairPrimes.put(a, new ArrayList<Integer>());
                     }
+                    if (!pairPrimes.containsKey(b)) {
+                        pairPrimes.put(b, new ArrayList<Integer>());
+                    }
                     pairPrimes.get(a).add(b);
+                    pairPrimes.get(b).add(a);
                 }
             }
         }
+        System.out.println(traverse(3));
 	}
 }

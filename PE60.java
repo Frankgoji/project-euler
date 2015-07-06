@@ -52,14 +52,29 @@ public class PE60 {
                 return empty;
             }
             ArrayList<Integer> pairs = pairPrimes.get(last(stack));
-            for (int c = pairs.size() - 1; c <= 0; c--) {
-                if (pairs.get(c) < p) {
+            int stsize = stack.size();
+            for (int c = pairs.size() - 1; c >= 0; c--) {
+                int t = pairs.get(c);
+                if (t < p) {
                     continue;
                 } else {
-
+                    boolean fitsAll = true;
+                    for (int j : stack) {
+                        if (!isPrimePair(t, j)) {
+                            fitsAll = false;
+                            break;
+                        }
+                    }
+                    if (fitsAll) {
+                        stack.add(t);
+                        break;
+                    }
                 }
             }
-            i++;
+            if (stsize != stack.size() - 1) {
+                stack.remove(stsize - 1);
+                i = increment(stack, i + 1);
+            }
         }
         return stack;
     }
@@ -69,12 +84,22 @@ public class PE60 {
         return list.get(list.size() - 1);
     }
 
+    /** Increments STACK by adding the nearest prime to I, returning I. */
+    public static int increment(ArrayList<Integer> stack, int i) {
+        while (i < primes.size() && !pairPrimes.containsKey(primes.get(i))) {
+            i++;
+        }
+        if (i < primes.size()) {
+            stack.add(primes.get(i));
+        }
+        return i;
+    }
+
     /** Main program. */
 	public static void main(String[] args) {
-        isPrime(1000);
+        isPrime(2000);
         int size = primes.size();
         for (int i = size - 1; i >= 0; i -= 1) {
-            System.out.println(i);
             for (int j = i - 1; j >= 0; j -= 1) {
                 int a = primes.get(i), b = primes.get(j);
                 if (isPrimePair(a, b)) {
@@ -89,6 +114,6 @@ public class PE60 {
                 }
             }
         }
-        System.out.println(traverse(3));
+        System.out.println(traverse(5));
 	}
 }

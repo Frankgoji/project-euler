@@ -67,6 +67,7 @@ public class PE60 {
                     }
                     if (fitsAll) {
                         stack.add(t);
+                        i = primes.indexOf(t);
                         break;
                     }
                 }

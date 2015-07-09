@@ -40,6 +40,22 @@ public class PE60 {
         return isPrime(Integer.parseInt(A+B)) && isPrime(Integer.parseInt(B+A));
     }
 
+    // Rewrite to be recursive. I'm so done with using the stack.
+    public static ArrayList<Integer> traverseRec(int length) {
+        ArrayList<Integer> stack = new ArrayList<>();
+        stack.add(3);
+        return helper(stack, length);
+    }
+
+    public static ArrayList<Integer> helper(ArrayList<Integer> stack,
+            int length) {
+        ArrayList<Integer> empty = new ArrayList<>();
+        if (stack.size() == length) {
+            return stack;
+        }
+        ArrayList<Integer> newStack = new ArrayList<>(stack);
+        return empty;
+    }
     /** Returns a sequence of prime pairs. */
     public static ArrayList<Integer> traverse(int length) {
         ArrayList<Integer> empty = new ArrayList<>(),
@@ -91,6 +107,9 @@ public class PE60 {
             i++;
         }
         if (i < primes.size()) {
+            if (primes.get(i) == 769) {
+                System.out.println(stack);
+            }
             stack.add(primes.get(i));
         }
         return i;
@@ -98,7 +117,7 @@ public class PE60 {
 
     /** Main program. */
 	public static void main(String[] args) {
-        isPrime(2000);
+        isPrime(1000);
         int size = primes.size();
         for (int i = size - 1; i >= 0; i -= 1) {
             for (int j = i - 1; j >= 0; j -= 1) {
@@ -115,6 +134,12 @@ public class PE60 {
                 }
             }
         }
-        System.out.println(traverse(5));
+        ArrayList<Integer> theFive = traverseRec(2);
+        System.out.println(theFive);
+        int sum = 0;
+        for (int k : theFive) {
+            sum += k;
+        }
+        System.out.println(sum);
 	}
 }

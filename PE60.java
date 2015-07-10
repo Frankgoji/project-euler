@@ -54,8 +54,10 @@ public class PE60 {
             return stack;
         }
         ArrayList<Integer> newStack = new ArrayList<>(stack);
+        // for loop
         return empty;
     }
+
     /** Returns a sequence of prime pairs. */
     public static ArrayList<Integer> traverse(int length) {
         ArrayList<Integer> empty = new ArrayList<>(),

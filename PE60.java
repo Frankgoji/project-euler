@@ -53,8 +53,15 @@ public class PE60 {
         if (stack.size() == length) {
             return stack;
         }
-        ArrayList<Integer> newStack = new ArrayList<>(stack);
+        ArrayList<Integer> newStack = new ArrayList<>(stack),
+            pairs = pairPrimes.get(last(stack)),
+            check = new ArrayList<>();
         // for loop
+        for (int p : pairs) {
+            // do something
+            newStack.add(p);
+            check = helper(newStack, length - 1);
+        }
         return empty;
     }
 

@@ -61,6 +61,11 @@ public class PE60 {
             // do something
             newStack.add(p);
             check = helper(newStack, length - 1);
+            if (check.size() == 0) {
+                return empty;
+            } else if (check.size() == length) {
+                return check;
+            }
         }
         return empty;
     }

@@ -66,6 +66,7 @@ public class PE60 {
             } else if (check.size() == length) {
                 return check;
             }
+            newStack = new ArrayList<>(stack);
         }
         return empty;
     }

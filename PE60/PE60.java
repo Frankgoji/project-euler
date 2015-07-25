@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.lang.Exception;
 import java.util.HashMap;
 
 /** Prime pair sets. */
@@ -56,11 +58,22 @@ public class PE60 {
         ArrayList<Integer> newStack = new ArrayList<>(stack),
             pairs = pairPrimes.get(last(stack)),
             check = new ArrayList<>();
+        Collections.reverse(pairs);
         // for loop
         for (int p : pairs) {
             // do something
-            newStack.add(p);
-            check = helper(newStack, length - 1);
+            boolean fits = true;
+            for (int num : stack) {
+                if (!isPrimePair(num, p)) {
+                    fits = false;
+                }
+            }
+            if (fits && p > last(stack)) {
+                newStack.add(p);
+            } else {
+                continue;
+            }
+            check = helper(newStack, length);
             if (check.size() == 0) {
                 return empty;
             } else if (check.size() == length) {
@@ -130,9 +143,31 @@ public class PE60 {
         return i;
     }
 
+    /** Checks if I is a prime pair with all the other primes in LST. */
+    public static boolean doesFit(int i, ArrayList<Integer> lst) {
+        for (int j : lst) {
+            if (!isPrimePair(i, j)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** Finds the next prime that fits all the primes in LST. */
+    public static int nextFit(ArrayList<Integer> lst) throws Exception {
+        int i = primes.indexOf(last(lst)) + 1;
+        while (!doesFit(primes.get(i), lst)) {
+            i++;
+            if (primes.get(i) > 200000) return -1;
+            if (last(primes) < 0) throw new Exception("negative vals");
+        }
+        return primes.get(i);
+    }
+
     /** Main program. */
-	public static void main(String[] args) {
-        isPrime(1000);
+	public static void main(String[] args) throws Exception {
+        isPrime(5000);
+        /*
         int size = primes.size();
         for (int i = size - 1; i >= 0; i -= 1) {
             for (int j = i - 1; j >= 0; j -= 1) {
@@ -149,7 +184,20 @@ public class PE60 {
                 }
             }
         }
-        ArrayList<Integer> theFive = traverseRec(2);
+        ArrayList<Integer> theFive = traverseRec(5);
+        */
+        ArrayList<Integer> theFive = new ArrayList<>();
+        int len = 5;
+        theFive.add(3);
+        while (theFive.size() < len) {
+            int n = nextFit(theFive);
+            if (n == -1) {
+                n = primes.get(primes.indexOf(theFive.get(0)) + 1);
+                theFive = new ArrayList<Integer>();
+            }
+            theFive.add(n);
+            System.out.println(theFive);
+        }
         System.out.println(theFive);
         int sum = 0;
         for (int k : theFive) {

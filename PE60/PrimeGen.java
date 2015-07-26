@@ -1,5 +1,8 @@
+package PE60;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.lang.StringBuilder;
 
 import java.io.IOException;
 import java.io.BufferedReader;
@@ -7,6 +10,7 @@ import java.io.BufferedWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -19,6 +23,7 @@ public class PrimeGen {
 
     public static BigInteger ONE = new BigInteger("1");
     public static BigInteger ZERO = new BigInteger("0");
+    public static BigInteger INCR = new BigInteger("10000000");
 
     /** The seed of primes. */
     public static ArrayList<BigInteger> primes = new ArrayList<>(Arrays.asList(
@@ -67,10 +72,33 @@ public class PrimeGen {
 
     /** Main program. */
 	public static void main(String[] args) {
-        isPrime(new BigInteger("99999"));
-        for (int i = 0; i < primes.size() - 1; i++) {
-            System.out.print(primes.get(i) + ",");
+        Path primePath = FileSystems.getDefault().getPath("PE60/primes.txt");
+        List<String> x = new ArrayList<>();
+        try (BufferedReader reader = Files.newBufferedReader(primePath,
+                    StandardCharsets.UTF_8)) {
+            x = Arrays.asList(reader.readLine().split(","));
+        } catch (IOException i) {
+            System.out.println("IOException");
+            System.exit(1);
         }
-        System.out.print(last(primes));
+
+        primes.clear();
+        for (String n : x) {
+            primes.add(new BigInteger(n));
+        }
+
+        isPrime(last(primes).add(INCR));
+        StringBuilder allPrimes = new StringBuilder();
+        for (int i = 0; i < primes.size() - 1; i++) {
+            allPrimes.append(primes.get(i).toString() + ",");
+        }
+        allPrimes.append(last(primes).toString());
+
+        try (BufferedWriter writer = Files.newBufferedWriter(primePath,
+                    StandardCharsets.UTF_8)) {
+            writer.write(allPrimes.toString(), 0, allPrimes.length());
+        } catch (IOException i) {
+            System.out.println("io problem");
+        }
 	}
 }

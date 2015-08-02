@@ -36,6 +36,7 @@ public class PE60 {
 	public static void main(String[] args) {
         Path primePath = FileSystems.getDefault().getPath("PE60/primes.txt");
         List<String> x = new ArrayList<>();
+        primes = new ArrayList<BigInteger>();
         try (BufferedReader reader = Files.newBufferedReader(primePath,
                     StandardCharsets.UTF_8)) {
             x = Arrays.asList(reader.readLine().split(","));

@@ -16,7 +16,8 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-// TODO: REWRITE ALL OF THIS SO THAT IT USES THE NONNAIVE APPROACH
+// TODO: REWRITE ALL OF THIS SO THAT IT USES THE NONNAIVE APPROACH. GOAL IS TO
+// BE ABLE TO USE THE RANDOMIZED VERSION. MAY BE ALLOWED TO REMOVE primes.txt.
 
 /** Generates prime numbers in large quantity, making use of the BigInteger
  *  class, then stores all the numbers as a list of strings and stores it in a
